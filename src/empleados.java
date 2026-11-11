@@ -1,12 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-
-/**
- *
- * @author eduar
- */
 import java.sql.*;
 
 public class empleados {
@@ -18,7 +9,6 @@ public class empleados {
     String nombree, puesto, turno, estadoe, nom_usr, nip;
 
     public empleados() {
-
     }
 
     public empleados(int codigo, String nombree, String puesto, 
@@ -52,7 +42,7 @@ public class empleados {
             return ps.executeUpdate();
 
         } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
+            System.out.println("Error al insertar: " + e.getMessage());
             return resultado;
         }
     }
@@ -69,7 +59,7 @@ public class empleados {
             return ps.executeUpdate();
 
         } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
+            System.out.println("Error al borrar: " + e.getMessage());
             return resultado;
         }
     }
@@ -95,7 +85,7 @@ public class empleados {
             return ps.executeUpdate();
 
         } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
+            System.out.println("Error al actualizar: " + e.getMessage());
             return resultado;
         }
     }
