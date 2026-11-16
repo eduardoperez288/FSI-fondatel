@@ -15,7 +15,10 @@ public class FAcceso extends javax.swing.JFrame {
     Conexion cnx = new Conexion();
 
 // Cambia 'usuarios' por 'empleados', 'rol' por 'puesto' y 'nom_usr' por 'nombree'
-String rol = "SELECT puesto FROM empleados WHERE nom_usr = '%s' AND nip = '%s' ";
+//String rol = "SELECT puesto FROM empleados WHERE nombree = '%s' AND nip = '%s'";
+String rol  = "SELECT puesto FROM empleados WHERE nombree = '%s' AND nip = '%s'";
+String rol2 = "SELECT 'cliente' FROM clientes WHERE nombrec = '%s' AND codigoc = '%s'";
+
 
     int intentos = 0;
 
@@ -142,11 +145,17 @@ String rol = "SELECT puesto FROM empleados WHERE nom_usr = '%s' AND nip = '%s' "
     }// </editor-fold>//GEN-END:initComponents
 
     private void BAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BAceptarActionPerformed
-        String usr = TUsuario.getText().trim();
+      String usr = TUsuario.getText().trim();
         String nip = new String(TPassword.getPassword()).trim();
 
         String sql = String.format(rol, usr, nip);
         String tipo = cnx.obtenerDato(sql);
+
+        // Si no encontró en empleados, busca en clientes usando rol2
+        if (tipo == null || tipo.trim().isEmpty()) {
+            String sql2 = String.format(rol2, usr, nip);
+            tipo = cnx.obtenerDato(sql2);
+        }
 
         // Si la BD no regresa ningún dato (null), le asignamos cadena vacía
         if (tipo == null) {
@@ -155,13 +164,6 @@ String rol = "SELECT puesto FROM empleados WHERE nom_usr = '%s' AND nip = '%s' "
 
         // Convertimos a minúsculas para que no importe si en la BD dice "Cajero" o "cajero"
         switch (tipo.toLowerCase().trim()) {
-            case "administrador":
-            case "admin":
-                Adminç fa = new Adminç();
-                this.dispose();
-                cnx.desconectar();
-                fa.setVisible(true);
-                break;
 
             case "mesero":
                 MeseroF fr = new MeseroF();
@@ -170,20 +172,29 @@ String rol = "SELECT puesto FROM empleados WHERE nom_usr = '%s' AND nip = '%s' "
                 fr.setVisible(true);
                 break;
 
-            
-            case "cocineros":
+            case "cocinero": // Antes decía "cocineros"
                 cocineroF fcoc = new cocineroF();
                 this.dispose();
                 cnx.desconectar();
                 fcoc.setVisible(true);
                 break;
+                
+                case "cliente":
+                clientesF fcli = new clientesF();
+                this.dispose();
+                cnx.desconectar();
+                fcli.setVisible(true);
+                break;
 
-           
-            case "cajeros":
+            case "cajero": // Antes decía "cajeros"
                 cajerosf fc = new cajerosf();
                 this.dispose();
                 cnx.desconectar();
                 fc.setVisible(true);
+                break;
+
+            case "gerente": // Faltaba este puesto de tu tabla
+                // Aquí abres el JFrame correspondiente al gerente
                 break;
 
             default:
@@ -195,7 +206,6 @@ String rol = "SELECT puesto FROM empleados WHERE nom_usr = '%s' AND nip = '%s' "
                 }
                 break;
         }
-
     }//GEN-LAST:event_BAceptarActionPerformed
 
     /**
